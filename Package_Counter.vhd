@@ -40,7 +40,7 @@ package Package_Counter is
         clk     : in STD_LOGIC;
         clear   : in STD_LOGIC;
         inc     : in STD_LOGIC;
-        count   : out STD_LOGIC_VECTOR(Counter_size downto 0)
+        count   : out STD_LOGIC_VECTOR((Counter_size-1) downto 0)
         );
     end component;
 

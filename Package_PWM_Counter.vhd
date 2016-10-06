@@ -34,10 +34,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 package Package_PWM_Counter is
 
 component PWM_Counter is
+    Generic(Counter_Size : in integer);
     Port(
         reset   : in STD_LOGIC;
         clk     : in STD_LOGIC;
         inc     : in STD_LOGIC;
+        clear   : in STD_LOGIC;
         count_to   : in integer;
         count_done  : out STD_LOGIC
     );

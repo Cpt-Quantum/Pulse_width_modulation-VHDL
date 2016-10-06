@@ -39,25 +39,26 @@ entity Counter is
         clk     : in STD_LOGIC;
         clear   : in STD_LOGIC;
         inc     : in STD_LOGIC;
-        count   : out STD_LOGIC_VECTOR(Counter_size downto 0)
+        count   : out STD_LOGIC_VECTOR((Counter_size-1) downto 0)
         );
 end Counter;
 
 architecture Behavioral of Counter is
-signal internal_count   : STD_LOGIC_VECTOR(Counter_size downto 0);
+signal internal_count   : STD_LOGIC_VECTOR((Counter_size-1) downto 0);
 begin
 
     Counter_proc : process (clk)
         begin
             if rising_edge(clk) then
                 if reset = '1' or clear = '1' then
-                    internal_count <= (others=>'0');
-                end if;
-                
-                if inc = '1' then
+                    internal_count <= (others=>'0');                                
+                elsif inc = '1' then
                 internal_count <= internal_count+1;
-                end if;
+                end if;--reset/clear if
             end if; --clk edge if
         end process Counter_proc;
 
+    --Assign internal counter to output counter
+    count <= internal_count;
+    
 end Behavioral;

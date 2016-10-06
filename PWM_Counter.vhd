@@ -33,6 +33,7 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 entity PWM_Counter is
+    Generic(Counter_size : in integer);
     Port(
         reset   : in STD_LOGIC;
         clk     : in STD_LOGIC;
@@ -44,7 +45,7 @@ entity PWM_Counter is
 end PWM_Counter;
 
 architecture Behavioral of PWM_Counter is
-signal internal_count : STD_LOGIC_VECTOR(7 downto 0);
+signal internal_count : STD_LOGIC_VECTOR(Counter_Size downto 0);
 begin
     
     PWM_Counter_proc : process(clk)
@@ -53,16 +54,16 @@ begin
                 --Reset or clear state
                 if reset = '1' or clear = '1' then
                     internal_count <= (others=>'0');
-                    count_done <= '1';
-                end if;
+                    count_done <= '0';
                 --Count when signalled
+                end if; 
                 if inc = '1' then
-                    internal_count <= internal_count + 1;
+                internal_count <= internal_count + 1;
                 end if;
-                --Send out signal when desired count is reached
-                if internal_count = STD_LOGIC_VECTOR(to_unsigned(count_to,8)) then
-                    count_done <= '1';
-                end if;                
+                if internal_count = STD_LOGIC_VECTOR(to_unsigned(count_to,Counter_Size)) then
+                    count_done <= '1';                  
+                end if;
+                --Send out signal when desired count is reached        
             end if; --clk edge if
         end process PWM_Counter_proc;
 
